@@ -4,7 +4,7 @@ const config = require('config');
 const app = express();
 
 
-const PORT = config.get('port') || 8000;
+const PORT = config.get("port");
 
 const options = {
     useNewUrlParser: true,
@@ -18,9 +18,11 @@ const path = config.get("path");
 
 async function connect() {
     try {
-        await mongoose.connect( `${uri}/${namedb}?authSource=${path}`, options);
+        console.log("Connecting database...")
+        await mongoose.connect( `${uri}/${namedb}?authSource=${path}&ssl=false`, options);
+        app.listen(PORT, () => console.log(`http://localhost:${PORT} server started`));
     } catch (e) {
-        console.log("Server error", e.message)
+        console.log("Server error: ", e.message)
         process.exit(1)
     }
 }
@@ -31,4 +33,3 @@ app.use(express.json({ extended: true }));
 
 app.use("/api", require("./routes/user.routes"))
 
-app.listen(PORT, () => console.log(`http://localhost:${PORT} server started`));

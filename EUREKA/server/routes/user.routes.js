@@ -3,10 +3,16 @@ const router = Router();
 const User = require("../models/User");
 
 router.get('/users', (req, res) => {
-    User.find({})
-        .then(user => {
-            res.send(user)
-        })
+
+        try {
+            User.find({})
+            .then(user => {
+                res.send(user)
+            })
+            
+        } catch (e) {
+            res.status(500).json( "Проверьте подключение ",e.message );
+        }
 });
 
 router.post('/users', (req, res) => {
@@ -19,9 +25,10 @@ router.post('/users', (req, res) => {
                     res.send(user);
                 })
     } catch (e) {
-        res.status(500).json({ message: "Что-то пошло не так, попробуйте снова " });
+        res.status(500).json( "Что-то пошло не так, попробуйте снова ",e.message );
     }
 });
+ 
 
 router.put('/users/:id', (req, res) => {
     User.findByIdAndUpdate({ _id: req.params.id }, req.body)
