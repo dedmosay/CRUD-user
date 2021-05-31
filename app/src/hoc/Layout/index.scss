@@ -1,0 +1,11 @@
+.Layout {
+    height: 100vh;              // доступ экрана 100% по высоте
+    display: flex;              
+    flex-direction: column;     // чтобы в колонке выстроить внутренние элементы
+    & main {
+        display: flex;  
+        flex-direction: column;
+        flex-grow: 1;           // чтобы занимал всю доступную высоту
+        background-color: #ff0;
+    }
+}

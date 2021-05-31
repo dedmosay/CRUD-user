@@ -1,6 +1,0 @@
-{
-    "port":"port",
-    "uri":"mongodb://username:password@host:port",
-    "namedb": "name",
-    "path": "source"
-}
