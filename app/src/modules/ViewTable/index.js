@@ -4,97 +4,57 @@ import './index.scss';
 import { personsFetchData } from "../../actions/persons_get"
 
 class ViewTable extends Component {
+    constructor(props){
+        super(props);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+       
+    state = {
+        userName: "q",
+        userAge: 1,
+        userCompany: "asd"
+    }
 
     /*
     *   будет отправлять данные в store
     */
     componentDidMount() {
-        // setTimeout(()=> {
-            this.props.fetchData("/api/users")
-
-/**
- * Комметрировано в связи с проверкой и дописания запросов POST/DELETE/PUT
- */
-
-           /* POST
-            var data = JSON.stringify({
-                "name": "Larry1",
-                "age": 21,
-                "company": "Adidas1"
-              });
-              
-              var xhr = new XMLHttpRequest();
-              xhr.withCredentials = true;
-              
-              xhr.addEventListener("readystatechange", function () {
-                if (this.readyState === 4) {
-                  console.log(this.responseText);
-                }
-              });
-              
-              xhr.open("POST", "/api/users");
-              xhr.setRequestHeader("content-type", "application/json");
-              xhr.setRequestHeader("cache-control", "no-cache");
-              xhr.setRequestHeader("postman-token", "1c1286bc-6afc-adbc-bde9-76ae29ecf485");
-              
-              xhr.send(data);
-              */
-
-
-
-              /* DELETE 
-              var data = JSON.stringify({
-                "name": "Nick"
-              });
-              
-              var xhr = new XMLHttpRequest();
-              xhr.withCredentials = true;
-              
-              xhr.addEventListener("readystatechange", function () {
-                if (this.readyState === 4) {
-                  console.log(this.responseText);
-                }
-              });
-              
-              xhr.open("DELETE", "/api/users/60b4d85f5cd6fc3e72861487");
-              xhr.setRequestHeader("content-type", "application/json");
-              xhr.setRequestHeader("cache-control", "no-cache");
-              xhr.setRequestHeader("postman-token", "f775d9c1-87ac-445f-f87f-fec1eade090c");
-              
-              xhr.send(data);
-
-              */
-
-
-              /* PUT
-              var data = JSON.stringify({
-                "company": "JOHN",
-                "age": 2112123123
-              });
-              
-              var xhr = new XMLHttpRequest();
-              xhr.withCredentials = true;
-              
-              xhr.addEventListener("readystatechange", function () {
-                if (this.readyState === 4) {
-                  console.log(this.responseText);
-                }
-              });
-              
-              xhr.open("PUT", "/api/users/60aeb659ff2627223a4abbf7");
-              xhr.setRequestHeader("content-type", "application/json");
-              xhr.setRequestHeader("cache-control", "no-cache");
-              xhr.setRequestHeader("postman-token", "4a95d084-ea47-5b95-bac3-ab71d63bea70");
-              
-              xhr.send(data);
-              */
-        // }, 2500)
+        this.props.fetchData("/api/users")
     }
 
+    hundleUserName = (event) => {
+        this.setState({ userName: event.target.value })
+    }
+    hundleUserAge = (event) => {
+        this.setState({ userAge: event.target.value })
+    }
+    hundleUserCompany = (event) => {
+        this.setState({ userCompany: event.target.value })
+    }
+
+    handleSubmit(event){ 
+        event.preventDefault();
+        fetch('/api/users', {
+            method: 'post',
+            headers: {'Content-Type':'application/json'},
+            body: 
+                JSON.stringify({
+                    "name":this.state.userName,
+                    "age": this.state.userAge,
+                    "company": this.state.userCompany
+                })
+        });
+    };
     render() {
         return (
             <div className="ViewTable">
                 This is ViewTable
+                <form>
+                    <input type="text" onChange={this.hundleUserName} placeholder="User name"></input>
+                    <input type="text" onChange={this.hundleUserAge} placeholder="Age user"></input>
+                    <input type="text" onChange={this.hundleUserCompany} placeholder="Company"></input>
+                </form>
+                <button onClick={this.handleSubmit}>Send</button>
                 <ul>
                     {this.props.persons.map((person, index) => {
                         return (
@@ -126,3 +86,51 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewTable);
+
+        /**
+         * Комметрировано в связи с проверкой и дописания запросов POST/DELETE/PUT
+         */
+
+        /* DELETE 
+        var data = JSON.stringify({
+          "name": "Nick"
+        });
+        
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+        
+        xhr.addEventListener("readystatechange", function () {
+          if (this.readyState === 4) {
+            console.log(this.responseText);
+          }
+        });
+        
+        xhr.open("DELETE", "/api/users/60aeb659ff2627223a4abbf7");
+        xhr.setRequestHeader("content-type", "application/json");
+        
+        xhr.send(data);
+
+      */
+
+
+        /* PUT
+        var data = JSON.stringify({
+          "company": "JOHN",
+          "age": 2112123123
+        });
+        
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+        
+        xhr.addEventListener("readystatechange", function () {
+          if (this.readyState === 4) {
+            console.log(this.responseText);
+          }
+        });
+        
+        xhr.open("PUT", "/api/users/60aeb659ff2627223a4abbf7");
+        xhr.setRequestHeader("content-type", "application/json");
+        
+        xhr.send(data);
+        */
+        // }, 2500)
