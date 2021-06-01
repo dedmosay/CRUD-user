@@ -6,7 +6,7 @@ router.get('/users', (req, res) => {
 
         try {
             User.find({})
-            .then(user => {
+            .then((user) => {
                 res.send(user)
             })
             
@@ -34,6 +34,8 @@ router.put('/users/:id', (req, res) => {
     User.findByIdAndUpdate({ _id: req.params.id }, req.body)
         .then(
             () => {
+                const {name, age, company} = req.body
+
                 User.findOne({ _id: req.params.id })
                     .then(
                         (user) => {

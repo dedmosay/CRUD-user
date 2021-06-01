@@ -9,7 +9,8 @@ const PORT = config.get("port");
 const options = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true
+    useCreateIndex: true,
+    useFindAndModify: false
 }
 
 const uri = config.get("uri");
